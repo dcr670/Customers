@@ -1,0 +1,51 @@
+﻿@using Customers.Classes
+@{
+    ViewBag.Title = @Model.Method;
+}
+
+@model CustomerViewModel
+
+<div>
+    <h3>@Model.Method Customer</h3>
+</div>
+
+@using (@Html.BeginForm(@Model.Action, "Customer"))
+{
+    <fieldset>
+        <div class="editor-label">
+            @Html.LabelFor(customerViewModel => customerViewModel.Customer.FirstName)
+        </div>
+        <div class="editor-field">
+                @Html.EditorFor(customerViewModel => customerViewModel.Customer.FirstName, @Model.Action == "Delete" ? new { htmlAttributes = new {@readonly="readonly"}} : new {})
+            @Html.ValidationMessageFor(customerViewModel => customerViewModel.Customer.FirstName, string.Empty, new { @class = "text-danger" })
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(customerViewModel => customerViewModel.Customer.LastName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(customerViewModel => customerViewModel.Customer.LastName, @Model.Action == "Delete" ? new { htmlAttributes = new { @readonly = "readonly" } } : new {})
+            @Html.ValidationMessageFor(customerViewModel => customerViewModel.Customer.LastName, string.Empty, new { @class = "text-danger" })
+        </div>
+        <p>
+            <br /><br />
+            @Html.HiddenFor(customerViewModel => customerViewModel.Customer.Id)
+            @if (!Model.Result)
+            {
+                <input type="submit" />
+            }
+            <a href="/Customer">
+                <input type="button" value="@(Model.Result ? "Back" : "Cancel" )">
+            </a>
+        </p>
+        <p class = "text-danger">@Model.ErrorMessage</p>
+    </fieldset>
+
+    <p>
+        @{
+            if (@Model.Result && @Model?.Customer?.Id != null)
+            {
+                <label class="text-danger">@Model.MethodVerb Customer Id: @Model.Customer.Id</label>
+            }
+        }
+    </p>
+}

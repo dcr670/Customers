@@ -1,0 +1,41 @@
+﻿@using Customers.Classes
+@{
+    ViewData["Title"] = "Customers";
+}
+
+@model CustomerViewModel
+
+<div class="text-center">
+    <h1 class="display-4">Customers</h1>
+
+    <p>
+        @Html.ActionLink("Create New", "Customer", new { method = "Create" })
+    </p>
+
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <th>Fist Name</th>
+            <th>Last Name</th>
+            <th></th>
+        </tr>
+
+        @if (Model != null && Model.Customers.Count() > 0)
+        {
+            foreach (Customer customer in Model.Customers)
+            {
+                <tr>
+                    <td>@customer.Id</td>
+                    <td>@customer.FirstName</td>
+                    <td>@customer.LastName</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Customer", new { customerId = customer.Id, method = "Edit" }) |
+                        @Html.ActionLink("Delete", "Customer", new { customerId = customer.Id, method = "Delete" })
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+    <br/>
+    <p class="text-danger">@Model?.ErrorMessage</p>
+</div>
