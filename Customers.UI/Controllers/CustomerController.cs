@@ -62,10 +62,9 @@ namespace Customers.UI.Controllers
 
                     var responseTask = await httpClient.GetAsync($"/Customers/{customerId}");
 
-                    if (responseTask.IsSuccessStatusCode)
-                    {
-                        customerVM.Customer = await responseTask.Content.ReadFromJsonAsync<Customer>() ?? new Customer();
-                    }
+                    responseTask.EnsureSuccessStatusCode();
+                    
+                    customerVM.Customer = await responseTask.Content.ReadFromJsonAsync<Customer>() ?? new Customer();
                 }
                 catch (Exception ex)
                 {
@@ -91,11 +90,11 @@ namespace Customers.UI.Controllers
 
                     var responseTask = await httpClient.PutAsJsonAsync<Customer>("/Customers", customer);
 
-                    if (responseTask.IsSuccessStatusCode)
-                    {
-                        customerVM.Customer = await responseTask.Content.ReadFromJsonAsync<Customer>() ?? new Customer();
-                        customerVM.Result = true;
-                    }
+                    responseTask.EnsureSuccessStatusCode();
+
+                    customerVM.Customer = await responseTask.Content.ReadFromJsonAsync<Customer>() ?? new Customer();
+                    customerVM.Result = true;
+
                 }
                 catch (Exception ex)
                 {
@@ -122,10 +121,8 @@ namespace Customers.UI.Controllers
 
                 var responseTask = await httpClient.DeleteAsync($"/Customers/{customer.Id}");
 
-                if (responseTask.IsSuccessStatusCode)
-                {
-                    customerVM.Result = true;
-                }
+                responseTask.EnsureSuccessStatusCode();
+                customerVM.Result = true;
             }
             catch (Exception ex)
             {
